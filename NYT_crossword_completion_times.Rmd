@@ -30,13 +30,25 @@ First graph by day of the week, for all puzzles completed after August 1, 2019:
 myData %>% 
   filter(date > 2019-08-01) %>%
   ggplot() +
-    geom_boxplot(mapping=aes(x=dow, y=timeM, color=dow), varwidth = TRUE) + 
+    geom_boxplot(mapping=aes(x=dow, y=timeM, fill=dow), varwidth = TRUE, alpha=.7) + 
     labs(x="Day of Week", y="Time to complete (in minutes)") +
-    theme_classic() +
+    theme_bw() +
   theme(legend.position = "none")
 
 myData %>%
   filter(date > 2019-08-01) %>%
   group_by(dow) %>%
   summarize(mean=mean(timeM), sd=sd(timeM))
+```
+
+Now on the log10 scale for time:
+```{r}
+myData %>% 
+  filter(date > 2019-08-01) %>%
+  ggplot() +
+    geom_boxplot(mapping=aes(x=dow, y=timeM, fill=dow), varwidth = TRUE, alpha=.7) + 
+    labs(x="Day of Week", y="Time to complete (in log10 minutes)") +
+    scale_y_log10() +
+    theme_bw() +
+  theme(legend.position = "none")
 ```
