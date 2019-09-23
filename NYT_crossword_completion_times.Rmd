@@ -40,16 +40,3 @@ myData %>%
   group_by(dow) %>%
   summarize(mean=mean(timeM), sd=sd(timeM))
 ```
-
-Looking at time to completion over time for monday and tuesday:
-```{r}
-myData <- myData %>%
-  mutate(timeSince=date - min(date))
-
-myData %>%
-  filter(day=="Tu") %>%
-  ggplot(mapping=aes(x=date, y=timeM)) + 
-  geom_point() + 
-  geom_smooth(se=FALSE)
-
-```
