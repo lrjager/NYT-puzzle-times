@@ -15,7 +15,7 @@ library(lubridate)
 library(googlesheets)
 ```
 
-```{r}
+```{r include=FALSE}
 # get the NYT crossword times google sheet
 NYTsheet <- gs_title("NYTXWdata")
 # list worksheets
