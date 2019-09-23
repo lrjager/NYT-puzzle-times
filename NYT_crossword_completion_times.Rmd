@@ -12,13 +12,20 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```{r include=FALSE}
 library(tidyverse)
 library(lubridate)
+library(googlesheets)
+```
+
+```{r}
+# get the NYT crossword times google sheet
+NYTsheet <- gs_title("NYTXWdata")
+# list worksheets
+gs_ws_ls(NYTsheet)
+# get data
+NYTdata <- gs_read(ss=NYTsheet, ws = "Sheet1")
 ```
 
 ```{r include=FALSE}
-myData <- read_csv("NYTXWdata.csv")
-
-myData <- myData %>%
-  mutate(date = mdy(date)) %>%
+myData <- NYTdata %>%
   mutate(timeM = time_hour*60 + time_min + time_sec/60) %>%
   mutate(dow = wday(date, label=TRUE))
 
