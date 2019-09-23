@@ -1,0 +1,55 @@
+---
+title: "NYT Crossword analysis"
+author: "Leah Jager"
+date: "9/23/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+```
+
+```{r include=FALSE}
+myData <- read_csv("NYTXWdata.csv")
+
+myData <- myData %>%
+  mutate(date = mdy(date)) %>%
+  mutate(timeM = time_hour*60 + time_min + time_sec/60) %>%
+  mutate(dow = wday(date, label=TRUE))
+
+myData %>% select(day, dow)
+```
+
+First graph by day of the week, for all puzzles completed after August 1, 2019:
+```{r}
+myData %>% 
+  filter(date > 2019-08-01) %>%
+  ggplot() +
+    geom_boxplot(mapping=aes(x=dow, y=timeM, color=dow), varwidth = TRUE) + 
+    labs(x="Day of Week", y="Time to complete (in minutes)") +
+    theme_classic() +
+  theme(legend.position = "none")
+
+myData %>%
+  filter(date > 2019-08-01) %>%
+  group_by(dow) %>%
+  summarize(mean=mean(timeM), sd=sd(timeM))
+```
+
+Looking at time to completion over time for monday and tuesday:
+```{r}
+myData <- myData %>%
+  mutate(timeSince=date - min(date))
+
+myData %>%
+  filter(day=="Tu") %>%
+  ggplot(mapping=aes(x=date, y=timeM)) + 
+  geom_point() + 
+  geom_smooth(se=FALSE)
+
+```
