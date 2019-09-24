@@ -59,3 +59,16 @@ myData %>%
     theme_bw() +
   theme(legend.position = "none")
 ```
+
+Put Sunday after Saturday to check out that linear trend on the log scale:
+```{r}
+myData %>% 
+  mutate(dow = factor(as.character(dow), levels=c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"), ordered=TRUE)) %>%
+  filter(date > 2019-08-01) %>%
+  ggplot() +
+    geom_boxplot(mapping=aes(x=dow, y=timeM, fill=dow), varwidth = TRUE, alpha=.7) + 
+    labs(x="Day of Week", y="Time to complete (in log10 minutes)") +
+    scale_y_log10() +
+    theme_bw() +
+  theme(legend.position = "none")
+```
