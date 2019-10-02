@@ -35,7 +35,7 @@ myData %>% select(day, dow)
 First graph by day of the week, for all puzzles completed after August 1, 2019:
 ```{r}
 myData %>% 
-  filter(date > 2019-08-01) %>%
+  filter(completed == "yes") %>%
   ggplot() +
     geom_boxplot(mapping=aes(x=dow, y=timeM, fill=dow), varwidth = TRUE, alpha=.7) + 
     labs(x="Day of Week", y="Time to complete (in minutes)") +
@@ -43,7 +43,7 @@ myData %>%
   theme(legend.position = "none")
 
 myData %>%
-  filter(date > 2019-08-01) %>%
+  filter(completed == "yes") %>%
   group_by(dow) %>%
   summarize(mean=mean(timeM), sd=sd(timeM))
 ```
@@ -51,7 +51,7 @@ myData %>%
 Now on the log10 scale for time:
 ```{r}
 myData %>% 
-  filter(date > 2019-08-01) %>%
+  filter(completed == "yes") %>%
   ggplot() +
     geom_boxplot(mapping=aes(x=dow, y=timeM, fill=dow), varwidth = TRUE, alpha=.7) + 
     labs(x="Day of Week", y="Time to complete (in log10 minutes)") +
@@ -64,7 +64,7 @@ Put Sunday after Saturday to check out that linear trend on the log scale:
 ```{r}
 myData %>% 
   mutate(dow = factor(as.character(dow), levels=c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"), ordered=TRUE)) %>%
-  filter(date > 2019-08-01) %>%
+  filter(completed == "yes") %>%
   ggplot() +
     geom_boxplot(mapping=aes(x=dow, y=timeM, fill=dow), varwidth = TRUE, alpha=.7) + 
     labs(x="Day of Week", y="Time to complete (in log10 minutes)") +
