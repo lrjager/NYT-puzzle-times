@@ -1,0 +1,34 @@
+---
+title: "Reading in XW images"
+author: "Leah Jager"
+date: "10/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(tesseract)
+library(pdftools)
+```
+
+```{r}
+# Simple example
+text <- ocr("Screenshot_20191002-140827.png")
+cat(text)
+text <- ocr("Screenshot_20191002-140827.png", HOCR = TRUE)
+cat(text)
+df <- ocr_data("Screenshot_20191002-140827.png", engine=tesseract("eng"))
+df %>% as.data.frame()
+
+df <- ocr("Screenshot_20191002-140827.png", engine=tesseract("eng"))
+df %>% as.data.frame()
+
+df <- pdf_data("Screenshot_20191002-140827.pdf")
+df %>% as.data.frame()
+
+
+```
